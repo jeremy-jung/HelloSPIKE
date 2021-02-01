@@ -46,24 +46,24 @@ function randomString(len, charSet) {
 // AIRTABLE CLOUD UPDATE: set the key to value
 function cloud_update_airtable(key, newValue) {
   // check if key already exists on Airtable*/
-  var names = cloud_connection.getNames();
+  var entries = cloud_connection.getEntriesInfo();
   var exists = false;
-  for (var index in names) {
-      if (names[index] == key) {
+  for (var name in entries) {
+      if (entries[name] == key) {
           exists = true;
           break;
       }
   }
   // key already exists, only update
-  if (exists) { cloud_connection.updateValue(key, newValue.toString()); }
+  if (exists) { cloud_connection.setEntryValueNotStrict(key, newValue.toString()); }
   // key does not exist, create a new pair
-  else { cloud_connection.createNameValuePair(key, newValue.toString()) }
+  else { cloud_connection.createEntry(key, newValue.toString()) }
 }
 
 // AIRTABLE CLOUD GET: get the value for a particular key
 function cloud_get_airtable(key) {
   // SHOULD PROBABLY DO MORE CHECKING HERE
-  return cloud_connection.getValue(key);
+  return cloud_connection.getEntryValue(key);
 }
 
 // SYSTEMLINK CLOUD UPDATE: set the key to value
@@ -78,7 +78,7 @@ function cloud_update_systemlink(key, newValue) {
       }
   }
   // key already exists, only update
-  if (exists) { cloud_connection.setTagValue(key, newValue.toString()); }
+  if (exists) { cloud_connection.setTagValueNotStrict(key, newValue.toString()); }
   // key does not exist, create a new pair
   else { cloud_connection.createTag(key, newValue.toString()) }
 }
